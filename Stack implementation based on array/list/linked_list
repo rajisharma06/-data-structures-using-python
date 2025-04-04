@@ -1,0 +1,88 @@
+---//Stack implementation based on array/list/linked_list
+#1  Parentheses Positioning Error (First Mismatch Position)
+def find_mismatch_position(s):
+    stack = []
+    
+    for i, char in enumerate(s):
+        if char == '(':
+            stack.append(i)  # Store index
+        elif char == ')':
+            if stack:
+                stack.pop()
+            else:
+                return i  # First mismatched closing parenthesis
+    
+    return stack[0] if stack else -1  # First unmatched opening parenthesis
+
+# Example
+print(find_mismatch_position("(())"))  # Output: -1 (Balanced)
+print(find_mismatch_position("(()"))   # Output: 0 (First '(' is unmatched)
+print(find_mismatch_position("())"))   # Output: 2 (First ')' is unmatched)
+#2 Parentheses in a Long String (Find Balanced Positions)
+python
+CopyEdit
+def find_balanced_positions(s):
+    stack = []
+    valid_positions = []
+    
+    for i, char in enumerate(s):
+        if char == '(':
+            stack.append(i)
+        elif char == ')' and stack:
+            valid_positions.append((stack.pop(), i))  # Pair found
+    
+    return valid_positions
+
+# Example
+print(find_balanced_positions("(a+b)*(c+d)"))  
+# Output: [(0, 4), (6, 10)] (Index pairs of balanced parentheses)
+#3 Minimum Number of Parentheses to Add (To Make It Valid)
+•	Approach: Count unmatched open and close brackets.
+python
+CopyEdit
+def min_add_to_make_valid(s):
+    open_count = 0
+    close_count = 0
+
+    for char in s:
+        if char == '(':
+            open_count += 1
+        elif char == ')':
+            if open_count > 0:
+                open_count -= 1
+            else:
+                close_count += 1  # Extra closing bracket
+
+    return open_count + close_count  # Total corrections needed
+
+# Example
+print(min_add_to_make_valid("(()"))   # Output: 1
+print(min_add_to_make_valid("())"))   # Output: 1
+print(min_add_to_make_valid("((())")) # Output: 1
+
+#4 Longest Valid Parentheses Substring
+python
+CopyEdit
+def longest_valid_parentheses(s):
+    stack = [-1]  # Stack stores index of last unmatched '('
+    max_length = 0
+
+    for i, char in enumerate(s):
+        if char == '(':
+            stack.append(i)
+        else:
+            stack.pop()  # Remove matching '('
+            if stack:
+                max_length = max(max_length, i - stack[-1])
+            else:
+                stack.append(i)
+
+    return max_length
+
+# Example
+print(longest_valid_parentheses("(()"))       # Output: 2 ("()")
+print(longest_valid_parentheses(")()())"))    # Output: 4 ("()()")
+print(longest_valid_parentheses("((()))"))    # Output: 6 ("((()))")
+
+
+
