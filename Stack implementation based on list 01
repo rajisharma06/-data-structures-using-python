@@ -1,0 +1,225 @@
+------//Stack implementation based on list: practice questions//----
+#1 Reverse a String using a Stack
+python
+CopyEdit
+def reverse_string(s):
+    stack = list(s)  # Using list as stack
+    reversed_str = ''
+    
+    while stack:
+        reversed_str += stack.pop()
+    
+    return reversed_str
+
+# Example
+print(reverse_string("hello"))  # Output: "olleh"
+
+#2️  Stack Sort Algorithm (Sort using only Stack Operations)
+python
+CopyEdit
+def sort_stack(stack):
+    temp_stack = []
+    
+    while stack:
+        temp = stack.pop()
+        while temp_stack and temp_stack[-1] > temp:
+            stack.append(temp_stack.pop())
+        temp_stack.append(temp)
+    
+    while temp_stack:
+        stack.append(temp_stack.pop())  # Reinsert sorted elements
+    
+    return stack
+
+# Example
+stack = [34, 3, 31, 98, 92, 23]
+print(sort_stack(stack))  # Output: [3, 23, 31, 34, 92, 98]
+
+#3 Implement a Queue using Two Stacks
+python
+CopyEdit
+class QueueUsingStacks:
+    def __init__(self):
+        self.stack1 = []  # Push stack
+        self.stack2 = []  # Pop stack
+
+    def enqueue(self, x):
+        self.stack1.append(x)
+
+    def dequeue(self):
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2.pop() if self.stack2 else None
+
+# Example
+q = QueueUsingStacks()
+q.enqueue(10)
+q.enqueue(20)
+print(q.dequeue())  # Output: 10
+print(q.dequeue())  # Output: 20
+
+#4 Undo/Redo Operation with Stack
+python
+CopyEdit
+class UndoRedoStack:
+    def __init__(self):
+        self.undo_stack = []
+        self.redo_stack = []
+
+    def perform_action(self, action):
+        self.undo_stack.append(action)
+        self.redo_stack.clear()  # Clear redo on new action
+
+    def undo(self):
+        if self.undo_stack:
+            self.redo_stack.append(self.undo_stack.pop())
+
+    def redo(self):
+        if self.redo_stack:
+            self.undo_stack.append(self.redo_stack.pop())
+
+# Example
+history = UndoRedoStack()
+history.perform_action("Type A")
+history.perform_action("Type B")
+history.undo()
+history.redo()
+
+#5 Stack that Supports Getting the Middle Element
+python
+CopyEdit
+class StackWithMiddle:
+    def __init__(self):
+        self.stack = []
+    
+    def push(self, x):
+        self.stack.append(x)
+    
+    def pop(self):
+        return self.stack.pop() if self.stack else None
+    
+    def get_middle(self):
+        if not self.stack:
+            return None
+        mid = (len(self.stack) - 1) // 2
+        return self.stack[mid]
+
+# Example
+s = StackWithMiddle()
+s.push(10)
+s.push(20)
+s.push(30)
+print(s.get_middle())  # Output: 20
+
+#6 Remove Duplicates from a Stack
+python
+CopyEdit
+def remove_duplicates(stack):
+    seen = set()
+    unique_stack = []
+    
+    while stack:
+        temp = stack.pop()
+        if temp not in seen:
+            seen.add(temp)
+            unique_stack.append(temp)
+    
+    return unique_stack[::-1]  # Reverse to maintain order
+
+# Example
+stack = [10, 20, 10, 30, 20, 40]
+print(remove_duplicates(stack))  # Output: [10, 20, 30, 40]
+
+#7 Implement Stack with Two Queues
+python
+CopyEdit
+from collections import deque
+
+class StackUsingQueues:
+    def __init__(self):
+        self.q1 = deque()
+        self.q2 = deque()
+
+    def push(self, x):
+        self.q1.append(x)
+
+    def pop(self):
+        while len(self.q1) > 1:
+            self.q2.append(self.q1.popleft())
+        res = self.q1.popleft()
+        self.q1, self.q2 = self.q2, self.q1  # Swap queues
+        return res
+
+    def peek(self):
+        return self.q1[-1] if self.q1 else None
+
+    def is_empty(self):
+        return len(self.q1) == 0
+
+# Example
+stack = StackUsingQueues()
+stack.push(10)
+stack.push(20)
+print(stack.pop())  # Output: 20
+
+#8 Check if a Stack is Palindrome
+python
+CopyEdit
+def is_palindrome_stack(stack):
+    return stack == stack[::-1]  # Check if stack is same when reversed
+
+# Example
+stack = [1, 2, 3, 2, 1]
+print(is_palindrome_stack(stack))  # Output: True
+
+#9 Next Greater Element using Stack
+python
+CopyEdit
+def next_greater_element(arr):
+    stack = []
+    result = [-1] * len(arr)
+    
+    for i in range(len(arr) - 1, -1, -1):
+        while stack and stack[-1] <= arr[i]:
+            stack.pop()
+        if stack:
+            result[i] = stack[-1]
+        stack.append(arr[i])
+    
+    return result
+
+# Example
+arr = [4, 5, 2, 25]
+print(next_greater_element(arr))  # Output: [5, 25, 25, -1]
+
+ Reverse a Queue using a Stack
+python
+CopyEdit
+from collections import deque
+
+def reverse_queue(queue):
+    stack = []
+    
+    while queue:
+        stack.append(queue.popleft())
+    
+    while stack:
+        queue.append(stack.pop())
+    
+    return queue
+
+# Example
+queue = deque([10, 20, 30])
+print(reverse_queue(queue))  # Output: deque([30, 20, 10])
+
+#11 Remove All Elements Less Than X
+python
+CopyEdit
+def remove_less_than_x(stack, x):
+    return [item for item in stack if item >= x]
+
+# Example
+stack = [10, 20, 5, 30, 2, 50]
+print(remove_less_than_x(stack, 15))  # Output: [20, 30, 50]
+
