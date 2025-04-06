@@ -1,0 +1,84 @@
+Stack implementation based on array/list/linked_list
+#1 Convert Postfix to Infix
+def postfix_to_infix(postfix):
+    stack = []
+    
+    for char in postfix:
+        if char.isalnum():  # Operand
+            stack.append(char)
+        else:  # Operator
+            b = stack.pop()
+            a = stack.pop()
+            stack.append(f"({a}{char}{b})")  # Form infix expression
+    
+    return stack[0]  # Final expression
+
+# Example
+print(postfix_to_infix("ab+cd-*"))  # Output: "((a+b)*(c-d))"
+#2 Convert Postfix to Prefix
+def postfix_to_prefix(postfix):
+    stack = []
+    
+    for char in postfix:
+        if char.isalnum():  # Operand
+            stack.append(char)
+        else:  # Operator
+            b = stack.pop()
+            a = stack.pop()
+            stack.append(char + a + b)  # Form prefix expression
+    
+    return stack[0]  # Final expression
+
+# Example
+print(postfix_to_prefix("ab+cd-*"))  # Output: "*+ab-cd"
+3 Convert Prefix to Postfix
+def prefix_to_postfix(prefix):
+    stack = []
+    
+    for char in reversed(prefix):
+        if char.isalnum():  # Operand
+            stack.append(char)
+        else:  # Operator
+            a = stack.pop()
+            b = stack.pop()
+            stack.append(a + b + char)  # Form postfix expression
+    
+    return stack[0]  # Final expression
+
+# Example
+print(prefix_to_postfix("*+ab-cd"))  # Output: "ab+cd-*"
+4 Implement Multiple Stacks Using a Single List
+
+class MultipleStacks:
+    def __init__(self, stack_count, size):
+        self.stack_count = stack_count
+        self.size = size
+        self.array = [None] * (stack_count * size)
+        self.tops = [-1] * stack_count  # Track top index of each stack
+
+    def push(self, stack_num, value):
+        if self.tops[stack_num] < self.size - 1:
+            self.tops[stack_num] += 1
+            index = stack_num * self.size + self.tops[stack_num]
+            self.array[index] = value
+        else:
+            print(f"Stack {stack_num} is full!")
+
+    def pop(self, stack_num):
+        if self.tops[stack_num] >= 0:
+            index = stack_num * self.size + self.tops[stack_num]
+            value = self.array[index]
+            self.array[index] = None
+            self.tops[stack_num] -= 1
+            return value
+        else:
+            print(f"Stack {stack_num} is empty!")
+            return None
+
+# Example
+stacks = MultipleStacks(3, 5)
+stacks.push(0, 10)
+stacks.push(1, 20)
+stacks.push(2, 30)
+print(stacks.pop(0))  # Output: 10
+
